@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Md Nor & Kasmunah Legacy Management | FELDA</title>
+<style>
+:root{
+  --ink:#1B2B22; --paper:#EEF2EA; --paper2:#E2E9DD;
+  --palm:#26533F; --palm-d:#173327; --gold:#B8862B;
+  --take:#A8501E; --save:#3E7A5B; --line:#C7D2C0;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#E9EEE5; --paper:#132018; --paper2:#1B2B22;
+    --palm:#6FAE8C; --palm-d:#8FC7A9; --gold:#E0B354;
+    --take:#E08356; --save:#7BC69E; --line:#324A3B;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E9EEE5; --paper:#132018; --paper2:#1B2B22;
+  --palm:#6FAE8C; --palm-d:#8FC7A9; --gold:#E0B354;
+  --take:#E08356; --save:#7BC69E; --line:#324A3B;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.45; padding:20px 16px 60px; max-width:640px; margin:0 auto;}
+h1{font-family:Georgia,"Times New Roman",serif; font-weight:600; font-size:1.5rem; color:var(--palm-d); margin:4px 0 2px;}
+.sub{color:var(--ink); opacity:.65; font-size:.88rem; margin:0 0 14px;}
+.tag{display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:.03em; background:var(--gold); color:#231a05; padding:3px 9px; border-radius:20px; margin-bottom:14px;}
+.tag.manager{background:var(--palm); color:#fff;}
+section{background:var(--paper2); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:16px;}
+h2{font-family:Georgia,serif; font-size:1.02rem; font-weight:600; margin:0 0 12px; color:var(--palm-d);}
+button{font-size:.9rem; font-weight:600; border:none; border-radius:7px; padding:10px 14px; cursor:pointer;}
+.btn-main{background:var(--palm); color:#fff; width:100%; margin-top:14px;}
+.btn-main:active{background:var(--palm-d);}
+.btn-ghost{background:transparent; border:1px solid var(--line); color:var(--ink); padding:6px 10px; font-size:.8rem;}
+label{display:block; font-size:.8rem; opacity:.75; margin:10px 0 4px;}
+input[type=text],input[type=number],input[type=password],input[type=month]{width:100%; padding:9px 10px; border-radius:7px; border:1px solid var(--line); background:var(--paper); color:var(--ink); font-size:1rem;}
+.hint{font-size:.78rem; opacity:.65; margin-top:8px;}
+.updated{font-size:.78rem; opacity:.6; margin-top:8px;}
+.nav{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+.nav button{background:var(--paper2); border:1px solid var(--line); color:var(--ink); opacity:.7; padding:8px 12px; font-size:.85rem; cursor:pointer; border-radius:7px;}
+.nav button.active{background:var(--palm); color:#fff; border-color:var(--palm); opacity:1;}
+.back-link{background:none; border:none; color:var(--palm-d); font-weight:600; padding:0 0 14px; font-size:.88rem; cursor:pointer;}
+.page{display:none;} .page.active{display:block;}
+.bignum{display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-top:1px solid var(--line); font-size:.98rem;}
+.bignum:first-of-type{border-top:none;}
+.bignum b{color:var(--gold); font-size:1.05rem;}
+.year-tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;}
+.year-tab{border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:20px; padding:5px 12px; font-size:.82rem; cursor:pointer;}
+.year-tab.active{background:var(--palm); color:#fff; border-color:var(--palm);}
+.summary-row{display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-top:1px solid var(--line); flex-wrap:wrap; gap:6px;}
+.summary-row:first-of-type{border-top:none;}
+.summary-name{font-weight:600;}
+.summary-nums{font-size:.82rem; opacity:.75;}
+.month-card{border:1px solid var(--line); border-radius:8px; padding:12px; margin-bottom:10px; background:var(--paper);}
+.month-card.editing{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold);}
+.month-head{display:flex; justify-content:space-between; align-items:baseline; cursor:pointer;}
+.month-head h3{margin:0; font-family:Georgia,serif; font-size:1rem; color:var(--palm-d);}
+.month-head span{font-size:.76rem; opacity:.6;}
+.month-deducts{font-size:.78rem; opacity:.7; margin-top:6px;}
+.month-deducts-label{font-weight:600; margin-bottom:4px;}
+.month-deducts-list{margin:0; padding-left:18px;}
+.month-deducts-list li{padding:2px 0;}
+.person-row{display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-top:1px solid var(--line); font-size:.88rem;}
+.person-row:first-of-type{border-top:none; margin-top:8px;}
+.tag-save{color:var(--save); font-weight:600;} .tag-take{color:var(--take); font-weight:600;}
+.empty{opacity:.55; font-size:.88rem; text-align:center; padding:14px 0;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:0 12px;}
+.deduct-row{display:flex; gap:6px; align-items:center; margin-top:8px;}
+.deduct-row input[type=text]{flex:1.2;} .deduct-row input[type=number]{flex:1;}
+.deduct-row button{background:transparent; border:1px solid var(--line); color:var(--take); border-radius:6px; padding:8px 10px; font-size:.85rem;}
+.baki-line{display:flex; justify-content:space-between; margin-top:14px; padding-top:10px; border-top:1px dashed var(--line); font-size:.93rem;}
+.baki-line b{color:var(--gold);}
+select{border-radius:6px; border:1px solid var(--line); background:var(--paper2); color:var(--ink); font-size:.8rem; padding:4px 6px;}
+.tabung-item{width:100%; padding-top:6px;}
+.bahagian-row{display:flex; gap:6px; align-items:center; margin-top:8px;}
+.bahagian-row input{flex:1;}
+.bahagian-row button{background:transparent; border:1px solid var(--line); color:var(--take); border-radius:6px; padding:8px 10px; font-size:.85rem;}
+.menu-wrap{position:relative;}
+.hamburger-btn{padding:9px 13px; font-size:1.05rem; line-height:1;}
+.hamburger-btn.active{background:var(--palm); color:#fff; border-color:var(--palm);}
+.dropdown-menu{display:none; position:absolute; right:0; top:calc(100% + 6px); background:var(--paper2); border:1px solid var(--line); border-radius:10px; box-shadow:0 8px 22px rgba(0,0,0,.2); overflow:hidden; z-index:70; min-width:170px;}
+.dropdown-menu.open{display:block;}
+.dropdown-menu button{display:block; width:100%; text-align:left; background:none; border:none; border-radius:0; padding:11px 14px; font-size:.88rem; font-weight:500; color:var(--ink); cursor:pointer;}
+.dropdown-menu button:not(:last-child){border-bottom:1px solid var(--line);}
+.dropdown-menu button:hover{background:var(--paper);}
+.dropdown-menu button.active{color:var(--palm-d); font-weight:700;}
+.modal-overlay{position:fixed; inset:0; background:rgba(10,20,14,.5); display:flex; align-items:center; justify-content:center; padding:20px; z-index:60;}
+.modal-box{background:var(--paper2); border:1px solid var(--line); border-radius:10px; padding:18px; max-width:400px; width:100%; max-height:90vh; overflow-y:auto;}
+.modal-box h3{margin:0; font-family:Georgia,serif; font-size:1.05rem; color:var(--palm-d);}
+</style>
+</head>
+<body>
+
+<span class="tag" id="modeTag">VIEW MODE</span>
+<h1>Md Nor & Kasmunah Legacy Management | FELDA</h1>
+<p class="sub">Yearly totals, family split &amp; management</p>
+
+<div class="nav" id="topNav">
+  <button data-toppage="dashboard" class="active" style="flex:1;">📊 Dashboard</button>
+  <div class="menu-wrap">
+    <button id="hamburgerBtn" type="button" class="btn-ghost hamburger-btn">☰</button>
+    <div id="hamburgerMenu" class="dropdown-menu">
+      <button type="button" data-toppage="urus">📋 Urus</button>
+      <button type="button" data-toppage="settings">⚙️ Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOP PAGE: DASHBOARD (view only) ============ -->
+<div id="top-dashboard" class="page toppage active">
+
+<button class="btn-main" id="dvBtnRefresh" type="button" style="margin-bottom:8px; margin-top:0;">🔄 Refresh data</button>
+<div class="updated" id="dvUpdatedAt" style="margin-bottom:4px;">No data yet.</div>
+<div class="updated" id="dvMetaInfo" style="margin-bottom:16px;"></div>
+
+<div id="dvDashboardBody" style="display:none;">
+
+<section>
+  <h2>Yearly Summary</h2>
+  <div class="year-tabs" id="dvYearTabs"></div>
+  <div class="bignum"><span>Total FELDA money received</span><b id="dvYJumlah">RM 0.00</b></div>
+  <div class="bignum"><span>Total deductions</span><b id="dvYPotongan">RM 0.00</b></div>
+  <div class="bignum"><span>Total divided (across all portions)</span><b id="dvYBaki">RM 0.00</b></div>
+  <p class="hint" style="margin:14px 0 10px;">Every month's amount received, deductions and per-portion split — shown in full below.</p>
+  <div id="dvMonthsList"></div>
+</section>
+
+<section>
+  <h2>Current savings (overall)</h2>
+  <div id="dvSummaryList"></div>
+</section>
+
+<section>
+  <h2>Report</h2>
+  <button class="btn-main" id="dvBtnPdf" type="button" style="margin-top:0;">📄 Generate PDF report</button>
+  <p class="hint">Same full report the manager can generate, based on the latest data loaded here.</p>
+</section>
+
+</div>
+</div>
+
+<!-- ============ TOP PAGE: URUS (manager, password gated) ============ -->
+<div id="top-urus" class="page toppage">
+
+<div class="nav" id="urusSubNav">
+  <button data-subpage="records" class="active">📋 Records</button>
+  <button data-subpage="tabung">🏦 Tabung</button>
+  <button data-subpage="names">👥 Portions</button>
+  <button class="btn-ghost" id="btnLockNow" type="button" style="margin-left:auto;">🔒 Lock</button>
+</div>
+<div class="updated" id="urusMetaLine" style="margin:-4px 0 12px;"></div>
+
+<div id="sub-records" class="page subpage active">
+<section id="addSection">
+  <h2>New monthly record</h2>
+  <label>Month</label>
+  <input type="month" id="fBulanTahun">
+  <label>FELDA amount received this month (RM)</label>
+  <input type="number" id="fJumlah" placeholder="0.00">
+  <div class="grid2">
+    <div>
+      <label>Buah sawit dihantar (tan)</label>
+      <input type="number" id="fTan" placeholder="0.00" step="0.01">
+    </div>
+    <div>
+      <label>Harga sawit (RM / tan)</label>
+      <input type="number" id="fHargaTan" placeholder="0.00" step="0.01" readonly style="opacity:.7;">
+    </div>
+  </div>
+  <p class="hint" style="margin-top:-6px;">Harga sepertan dikira automatik: Jumlah FELDA ÷ Tan.</p>
+  <label>Deductions</label>
+  <div id="deductRows"></div>
+  <button class="btn-ghost" id="btnAddDeduct" type="button">+ Add deduction</button>
+  <label style="margin-top:16px;">Tabung (Savings Fund) — RM</label>
+  <input type="number" id="fTabung" placeholder="0.00">
+  <p class="hint" style="margin-top:4px;">Jumlah Tabung bulan ini — automatik masuk dalam jumlah potongan &amp; baki.</p>
+  <div class="baki-line"><span>Total deductions</span><b id="fPotongan">RM 0.00</b></div>
+  <div class="baki-line"><span>Balance after deductions</span><b id="fBaki">RM 0.00</b></div>
+  <div class="baki-line"><span>Share per portion</span><b id="fBahagian">RM 0.00</b></div>
+  <button class="btn-main" id="btnAdd">Save this month's record</button>
+  <button class="btn-ghost" id="btnCancelEdit" type="button" style="display:none;margin-top:8px;width:100%;">Cancel edit</button>
+</section>
+
+<section>
+  <h2>Monthly history</h2>
+  <button class="btn-ghost" id="btnUrusRefresh" type="button" style="margin-bottom:10px;">🔄 Refresh data dari Cloud</button>
+  <p class="hint" style="margin:0 0 10px;">Tarik rekod terkini dari Google Sheet (contohnya rekod yang disimpan dari peranti/browser lain). Ini akan gantikan senarai di bawah dengan data terbaru dari Sheet.</p>
+  <div id="uMonthsList"><p class="empty">No records yet.</p></div>
+</section>
+
+<section>
+  <h2>Savings per portion</h2>
+  <div id="uSummaryList"></div>
+</section>
+
+<section>
+  <h2>Sync &amp; Report</h2>
+  <button class="btn-main" id="btnSyncNow" type="button" style="margin-top:0;">☁️ Sync now</button>
+  <button class="btn-main" id="btnPdf" type="button">📄 Generate PDF report</button>
+  <p class="hint">Records auto-sync to Google Sheet every time you save (if the URL is set in Settings). This also updates what family members see on the Dashboard.</p>
+</section>
+</div>
+
+<div id="sub-tabung" class="page subpage">
+<button class="back-link" data-subpage="records">← Back</button>
+<section>
+  <h2>Savings Fund (Tabung)</h2>
+  <div class="baki-line" style="margin-top:0;padding-top:0;border-top:none;"><span>Total collected (all-time)</span><b id="tabungAllTime">RM 0.00</b></div>
+  <div class="baki-line"><span>Total withdrawn</span><b id="tabungWithdrawnTotal">RM 0.00</b></div>
+  <div class="baki-line"><span>Available balance</span><b id="tabungBalance">RM 0.00</b></div>
+  <button class="btn-main" id="btnTabungWithdraw" type="button">🏧 Withdraw from Tabung</button>
+  <p class="hint" style="margin:6px 0 0;">Use this when there's a family event to pay for using the Tabung.</p>
+  <div id="tabungWithdrawHistory"></div>
+  <div class="year-tabs" id="tabungYearTabs" style="margin-top:16px;"></div>
+  <div class="baki-line"><span>Collected this year</span><b id="tabungYearTotal">RM 0.00</b></div>
+  <p class="hint" style="margin:10px 0 10px;">Tap a month to see exactly what went into the Tabung that month.</p>
+  <div id="tabungMonthsList"></div>
+</section>
+</div>
+
+<div id="sub-names" class="page subpage">
+<button class="back-link" data-subpage="records">← Back</button>
+<section>
+  <h2>Portion names / labels</h2>
+  <div id="namesList"></div>
+  <button class="btn-ghost" id="btnAddName" type="button" style="margin-top:10px;">+ Add portion</button>
+  <button class="btn-main" id="btnSaveNames" type="button" disabled>💾 Save changes</button>
+  <div class="updated" id="namesStatus">No changes.</div>
+</section>
+</div>
+
+</div>
+
+<!-- ============ TOP PAGE: SETTINGS (shared) ============ -->
+<div id="top-settings" class="page toppage">
+<section>
+  <h2>Google Sheet connection</h2>
+  <label>Web App URL (from the manager)</label>
+  <input type="text" id="sheetUrl" placeholder="https://script.google.com/macros/s/.../exec">
+  <button class="btn-ghost" id="btnSaveUrl" type="button" style="margin-top:8px;">Save URL</button>
+  <p class="hint">Used both by the Dashboard (to fetch the latest data) and by Urus (to save new records). Same URL for everyone in the family.</p>
+  <div class="updated" id="syncStatus">Not connected yet.</div>
+</section>
+<section>
+  <h2>Urus passcode</h2>
+  <p class="hint" style="margin-top:0;">Default passcode is <b>admin123</b>. Set a new one below if you'd like to change it — this only protects casual access on this device/browser, not true security.</p>
+  <label>New passcode (min 4 characters)</label>
+  <input type="password" id="newPass1" placeholder="New passcode" autocomplete="off">
+  <label>Confirm new passcode</label>
+  <input type="password" id="newPass2" placeholder="Confirm new passcode" autocomplete="off">
+  <button class="btn-main" id="btnChangePass" type="button">💾 Update passcode</button>
+  <div class="updated" id="passStatus"></div>
+</section>
+<section>
+  <h2>👤 Admin &amp; sejarah kemas kini</h2>
+  <div class="baki-line" style="margin-top:0;padding-top:0;border-top:none;"><span>Nama anda (peranti ini)</span><b id="adminNameLabel">—</b></div>
+  <button class="btn-ghost" id="btnChangeName" type="button" style="margin-top:8px;">✏️ Tukar nama</button>
+  <p class="hint">Nama ini direkod setiap kali anda kemas kini data, dan dipaparkan pada orang lain yang cuba buka Urus / Settings ketika anda sedang guna.</p>
+  <label style="margin-top:14px;">Sejarah kemas kini (30 terkini)</label>
+  <div id="historyList"></div>
+</section>
+<section>
+  <h2>⚠️ Danger zone</h2>
+  <p class="hint" style="margin-top:0;">Padam SEMUA rekod bulanan, tabung, sejarah pengeluaran &amp; pemindahan — di peranti ini DAN di Google Sheet (nama bahagian/portion tidak dipadam). Tindakan ini tidak boleh dibatalkan.</p>
+  <button class="btn-ghost" id="btnClearAllData" type="button" style="width:100%; color:var(--take); border-color:var(--take);">🗑️ Clear all data</button>
+  <div class="updated" id="clearDataStatus"></div>
+</section>
+</div>
+
+<!-- ============ Password lock modal for Urus ============ -->
+<div id="lockOverlay" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3>🔒 Manager access</h3>
+    <p class="hint" style="margin:8px 0 12px;">Enter the manager passcode to open Urus.</p>
+    <input type="password" id="lockPass" placeholder="Passcode" autocomplete="off">
+    <div id="lockError" style="color:var(--take); font-size:.82rem; display:none; margin-top:8px;">Wrong passcode.</div>
+    <div style="display:flex; gap:8px; margin-top:14px;">
+      <button class="btn-ghost" id="lockCancel" type="button" style="flex:1;">Cancel</button>
+      <button class="btn-main" id="lockSubmit" type="button" style="flex:1; margin-top:0;">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Admin name modal ============ -->
+<div id="nameOverlay" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3>👤 Siapa anda?</h3>
+    <p class="hint" style="margin:8px 0 12px;">Masukkan nama anda (contoh: Along). Nama ini direkod dalam sejarah kemas kini dan ditunjuk kepada admin lain.</p>
+    <input type="text" id="adminNameInput" placeholder="Nama anda" autocomplete="off" maxlength="30">
+    <div style="display:flex; gap:8px; margin-top:14px;">
+      <button class="btn-ghost" id="nameCancel" type="button" style="flex:1;">Batal</button>
+      <button class="btn-main" id="nameSave" type="button" style="flex:1; margin-top:0;">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Busy / locked modal ============ -->
+<div id="busyOverlay" class="modal-overlay" style="display:none; z-index:80;">
+  <div class="modal-box">
+    <h3 id="busyTitle">🔒 Sedang digunakan</h3>
+    <p class="hint" id="busyMsg" style="margin:8px 0 12px;"></p>
+    <div style="display:flex; gap:8px; margin-top:14px;">
+      <button class="btn-ghost" id="busyClose" type="button" style="flex:1;">Tutup</button>
+      <button class="btn-main" id="busyRetry" type="button" style="flex:1; margin-top:0;">Cuba lagi</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Withdraw modal (Urus) ============ -->
+<div id="withdrawModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3 id="wmTitle">Withdraw</h3>
+    <div id="wmTypeRow" style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
+      <label style="display:flex; align-items:center; gap:8px; font-size:.9rem; margin:0;"><input type="radio" name="wmType" value="self" checked> Keep it for myself</label>
+      <label style="display:flex; align-items:center; gap:8px; font-size:.9rem; margin:0;"><input type="radio" name="wmType" value="transfer"> Transfer to another portion / Wakaf</label>
+    </div>
+    <div id="wmDestWrap" style="display:none;">
+      <label>Transfer to</label>
+      <select id="wmDest"></select>
+    </div>
+    <label>Amount (RM)</label>
+    <input type="number" id="wmAmount" placeholder="0.00">
+    <label>Note (optional)</label>
+    <input type="text" id="wmNote" placeholder="e.g. Kenduri kahwin Angah">
+    <div style="display:flex; gap:8px; margin-top:16px;">
+      <button class="btn-ghost" id="wmCancel" type="button" style="flex:1;">Cancel</button>
+      <button class="btn-main" id="wmConfirm" type="button" style="flex:1; margin-top:0;">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PDF scope modal ============ -->
+<div id="pdfScopeModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3>📄 Generate PDF report</h3>
+    <p class="hint" style="margin:8px 0 4px;">Pilih skop laporan:</p>
+    <label>Skop</label>
+    <select id="pdfScopeSelect">
+      <option value="">Semua rekod (All)</option>
+    </select>
+    <div style="display:flex; gap:8px; margin-top:16px;">
+      <button class="btn-ghost" id="pdfScopeCancel" type="button" style="flex:1;">Cancel</button>
+      <button class="btn-main" id="pdfScopeConfirm" type="button" style="flex:1; margin-top:0;">Generate</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ============================================================
+   SHARED HELPERS
+   ============================================================ */
+const rm = n => 'RM ' + (Number(n)||0).toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+// Correct balance math: a transfer_in must ADD to savings, everything else (withdraw / transfer_out) subtracts.
+function computeBalances(st){
+  return st.names.map((name,i)=>{
+    let simpanan=0, diambil=0;
+    st.months.forEach(m=>{ if((m.statuses[i]||'simpan')==='simpan') simpanan+=m.bahagian; else diambil+=m.bahagian; });
+    (st.withdrawals||[]).forEach(w=>{
+      if(w.i!==i) return;
+      if(w.type==='transfer_in'){ simpanan+=w.amount; }
+      else { simpanan-=w.amount; diambil+=w.amount; }
+    });
+    return {name, simpanan: Math.max(0,simpanan), diambil};
+  });
+}
+
+/* ============================================================
+   SHARED: Google Sheet URL + Urus passcode (Settings page)
+   ============================================================ */
+const SHEET_KEY='felda-sheet-url-v2';
+const DEFAULT_SHEET_URL='https://script.google.com/macros/s/AKfycbwNoqZ2324TsvEODcCCvjG1FzhiVUq6HrSXVyRm0r5nMSADnQSrEVSKt4AeDS-TZD92/exec';
+let sheetUrl=DEFAULT_SHEET_URL;
+try{
+  const savedUrl=localStorage.getItem(SHEET_KEY);
+  if(savedUrl){ sheetUrl=savedUrl; } else { localStorage.setItem(SHEET_KEY, DEFAULT_SHEET_URL); }
+}catch(e){}
+document.getElementById('sheetUrl').value=sheetUrl;
+
+function setSyncStatus(text){ document.getElementById('syncStatus').textContent=text; }
+function refreshSyncLabel(){
+  if(!sheetUrl){ setSyncStatus('Not connected yet.'); return; }
+  setSyncStatus('Connected.');
+}
+refreshSyncLabel();
+
+document.getElementById('btnSaveUrl').addEventListener('click', ()=>{
+  sheetUrl=document.getElementById('sheetUrl').value.trim();
+  try{ localStorage.setItem(SHEET_KEY, sheetUrl); }catch(e){}
+  refreshSyncLabel();
+  if(sheetUrl) dvRefreshFromSheet();
+});
+
+const PASS_KEY='felda-urus-pass-hash';
+const DEFAULT_PASS='admin123';
+async function sha256Hex(text){
+  const enc=new TextEncoder().encode(text);
+  const buf=await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function getStoredHash(){ try{ return localStorage.getItem(PASS_KEY); }catch(e){ return null; } }
+function setStoredHash(h){ try{ localStorage.setItem(PASS_KEY, h); }catch(e){} }
+async function checkPasscode(val){
+  const stored=getStoredHash();
+  if(stored) return (await sha256Hex(val))===stored;
+  return val===DEFAULT_PASS;
+}
+document.getElementById('btnChangePass').addEventListener('click', async ()=>{
+  const p1=document.getElementById('newPass1').value;
+  const p2=document.getElementById('newPass2').value;
+  const status=document.getElementById('passStatus');
+  if(!p1 || p1.length<4){ status.textContent='Passcode must be at least 4 characters.'; return; }
+  if(p1!==p2){ status.textContent='Passcodes do not match.'; return; }
+  setStoredHash(await sha256Hex(p1));
+  document.getElementById('newPass1').value=''; document.getElementById('newPass2').value='';
+  status.textContent='✅ Passcode updated.';
+});
+
+/* ============================================================
+   TOP-LEVEL NAVIGATION + PASSWORD LOCK FOR URUS
+   ============================================================ */
+let sessionUnlocked=false;
+try{ sessionUnlocked = sessionStorage.getItem('felda-urus-unlocked')==='1'; }catch(e){}
+
+const lockOverlay=document.getElementById('lockOverlay');
+const lockPass=document.getElementById('lockPass');
+const lockError=document.getElementById('lockError');
+let pendingTopPage='urus';
+
+function openLockModal(){
+  lockError.style.display='none'; lockPass.value='';
+  lockOverlay.style.display='flex'; lockPass.focus();
+}
+function closeLockModal(){ lockOverlay.style.display='none'; }
+document.getElementById('lockCancel').addEventListener('click', closeLockModal);
+document.getElementById('lockSubmit').addEventListener('click', submitLock);
+lockPass.addEventListener('keydown', e=>{ if(e.key==='Enter') submitLock(); });
+async function submitLock(){
+  const ok = await checkPasscode(lockPass.value);
+  if(ok){
+    sessionUnlocked=true;
+    try{ sessionStorage.setItem('felda-urus-unlocked','1'); }catch(e){}
+    closeLockModal();
+    enterAdmin(pendingTopPage);
+  } else {
+    lockError.style.display='block'; lockPass.value=''; lockPass.focus();
+  }
+}
+document.getElementById('btnLockNow').addEventListener('click', ()=>{
+  sessionUnlocked=false;
+  try{ sessionStorage.removeItem('felda-urus-unlocked'); }catch(e){}
+  actuallyShowTopPage('dashboard');
+});
+
+const hamburgerBtn=document.getElementById('hamburgerBtn');
+const hamburgerMenu=document.getElementById('hamburgerMenu');
+hamburgerBtn.addEventListener('click', (e)=>{ e.stopPropagation(); hamburgerMenu.classList.toggle('open'); });
+document.addEventListener('click', (e)=>{
+  if(hamburgerMenu.classList.contains('open') && !hamburgerMenu.contains(e.target) && e.target!==hamburgerBtn){
+    hamburgerMenu.classList.remove('open');
+  }
+});
+
+function actuallyShowTopPage(name){
+  if(name==='dashboard') releaseLock();
+  document.querySelectorAll('.toppage').forEach(p=>p.classList.remove('active'));
+  document.getElementById('top-'+name).classList.add('active');
+  document.querySelectorAll('#topNav button[data-toppage]').forEach(b=>b.classList.toggle('active', b.dataset.toppage===name));
+  hamburgerBtn.classList.toggle('active', name!=='dashboard');
+  document.getElementById('modeTag').textContent = (name==='urus'||name==='settings') ? 'MANAGER MODE' : 'VIEW MODE';
+  document.getElementById('modeTag').classList.toggle('manager', name==='urus'||name==='settings');
+  if(name==='urus'){
+    showSubPage('records');
+    urusRenderAll();
+    if(!document.getElementById('fBulanTahun').value){
+      document.getElementById('fBulanTahun').value = new Date(Date.now()+8*3600*1000).toISOString().slice(0,7);
+    }
+  }
+}
+function requestTopPage(name){
+  if((name==='urus' || name==='settings') && !sessionUnlocked){ pendingTopPage=name; openLockModal(); return; }
+  if(name==='urus' || name==='settings'){ enterAdmin(name); return; }
+  actuallyShowTopPage(name);
+}
+document.querySelectorAll('#topNav button[data-toppage]').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    requestTopPage(el.dataset.toppage);
+    hamburgerMenu.classList.remove('open');
+  });
+});
+
+function showSubPage(name){
+  document.querySelectorAll('.subpage').forEach(p=>p.classList.remove('active'));
+  document.getElementById('sub-'+name).classList.add('active');
+  document.querySelectorAll('#urusSubNav button[data-subpage]').forEach(b=>b.classList.toggle('active', b.dataset.subpage===name));
+  if(name==='tabung') renderTabungPage();
+  if(name==='names') openNamesPage();
+}
+document.querySelectorAll('[data-subpage]').forEach(el=>{
+  el.addEventListener('click', ()=>showSubPage(el.dataset.subpage));
+});
+
+/* ============================================================
+   DASHBOARD MODULE (view only — reads from the Google Sheet)
+   ============================================================ */
+const DV_KEY='felda-dashboard-v1';
+const DASH_DEFAULT_NAMES=['Along','Angah','Ayang','Arul','Manja','Ucu','Wakaf'];
+let dvState=null, dvSelectedYear=null;
+let dvExpandedMonths=new Set();
+
+function dvNormalize(s){
+  if(!s || typeof s!=='object') return null;
+  if(!Array.isArray(s.names) || s.names.length===0) s.names=DASH_DEFAULT_NAMES.slice();
+  if(!Array.isArray(s.months)) s.months=[];
+  s.months.forEach(m=>{ if(!Array.isArray(m.statuses)) m.statuses=[]; if(!m.tahun) m.tahun=new Date().getFullYear(); });
+  if(!Array.isArray(s.withdrawals)) s.withdrawals=[];
+  if(!Array.isArray(s.tabungWithdrawals)) s.tabungWithdrawals=[];
+  return s;
+}
+function dvLoadLocal(){
+  try{ const raw=localStorage.getItem(DV_KEY); if(raw){ const parsed=JSON.parse(raw); return dvNormalize(parsed.state); } }catch(e){}
+  return null;
+}
+function dvLoadUpdatedAt(){
+  try{ const raw=localStorage.getItem(DV_KEY); if(raw) return JSON.parse(raw).updatedAt; }catch(e){}
+  return null;
+}
+function dvPersist(){
+  try{ localStorage.setItem(DV_KEY, JSON.stringify({state:dvState, updatedAt: new Date().toISOString()})); }catch(e){}
+}
+
+function dvRefreshFromSheet(){
+  if(!sheetUrl) return;
+  const btn=document.getElementById('dvBtnRefresh');
+  const oldText=btn.textContent;
+  btn.textContent='Refreshing…'; btn.disabled=true;
+  const callbackName='feldaJsonp_'+Date.now();
+  const script=document.createElement('script');
+  let finished=false;
+  const finish=()=>{ btn.textContent=oldText; btn.disabled=false; script.remove(); try{ delete window[callbackName]; }catch(e){ window[callbackName]=undefined; } };
+  const timer=setTimeout(()=>{ if(finished) return; finished=true; finish(); alert('Refresh gagal. Semak deployment Apps Script: Execute as = Me dan Who has access = Anyone.'); },15000);
+  window[callbackName]=function(data){
+    if(finished) return; finished=true; clearTimeout(timer);
+    const norm=dvNormalize(data);
+    if(!norm){ finish(); alert('Data daripada Google Sheet tidak sah.'); return; }
+    if(data.ok===false){ finish(); alert('Apps Script error: '+(data.error||'Unknown error')); return; }
+    dvState=norm; dvPersist(); dvSelectedYear=null; dvRenderAll(); finish();
+  };
+  script.onerror=()=>{ if(finished) return; finished=true; clearTimeout(timer); finish(); alert('Tak dapat akses Google Apps Script. Semak deployment Web App dan URL /exec.'); };
+  script.src=sheetUrl+'?callback='+encodeURIComponent(callbackName)+'&_='+Date.now();
+  document.body.appendChild(script);
+}
+document.getElementById('dvBtnRefresh').addEventListener('click', dvRefreshFromSheet);
+
+function urusRefreshFromSheet(){
+  if(!sheetUrl){ alert('Sila set & simpan Google Sheet URL dalam Settings dahulu.'); return; }
+  if(state.months.length>0 && !confirm('Ini akan gantikan rekod tempatan di peranti ini dengan data terkini dari Google Sheet. Teruskan?')) return;
+  const btn=document.getElementById('btnUrusRefresh');
+  const oldText=btn.textContent;
+  btn.textContent='Refreshing…'; btn.disabled=true;
+  const callbackName='feldaUrusJsonp_'+Date.now();
+  const script=document.createElement('script');
+  let finished=false;
+  const finish=()=>{ btn.textContent=oldText; btn.disabled=false; script.remove(); try{ delete window[callbackName]; }catch(e){ window[callbackName]=undefined; } };
+  const timer=setTimeout(()=>{ if(finished) return; finished=true; finish(); alert('Refresh gagal. Semak deployment Apps Script: Execute as = Me dan Who has access = Anyone.'); },15000);
+  window[callbackName]=function(data){
+    if(finished) return; finished=true; clearTimeout(timer);
+    if(data && data.ok===false){ finish(); alert('Apps Script error: '+(data.error||'Unknown error')); return; }
+    const norm=normalize(data);
+    if(!norm){ finish(); alert('Data daripada Google Sheet tidak sah.'); return; }
+    state=norm; baseRev=state.meta.rev; setDirty(false);
+    persistLocal();
+    editingMonthId=null; resetAddForm(); renderMonths(); renderSummary(); renderNamesPage(); renderTabungPage(); renderMeta();
+    finish();
+  };
+  script.onerror=()=>{ if(finished) return; finished=true; clearTimeout(timer); finish(); alert('Tak dapat akses Google Apps Script. Semak deployment Web App dan URL /exec.'); };
+  script.src=sheetUrl+'?callback='+encodeURIComponent(callbackName)+'&_='+Date.now();
+  document.body.appendChild(script);
+}
+document.getElementById('btnUrusRefresh').addEventListener('click', urusRefreshFromSheet);
+
+async function clearAllData(){
+  const status=document.getElementById('clearDataStatus');
+  if(!confirm('Adakah anda PASTI mahu padam SEMUA rekod bulanan, tabung dan sejarah pengeluaran/pemindahan? Ini akan padam data di peranti ini DAN di Google Sheet, dan tidak boleh dibatalkan.')) return;
+  const typed = prompt('Untuk sahkan, taip PADAM (huruf besar) di bawah:');
+  if(typed!=='PADAM'){ alert('Dibatalkan — teks pengesahan tidak sepadan.'); return; }
+  if(sheetUrl){
+    status.textContent='Menyemak data terkini di cloud…';
+    try{
+      const c=normalize(await cloudGet());
+      if(!(isDirty() && c.meta.rev<=baseRev)){ state=c; }
+      if(lockHeld) state.meta.lock={deviceId:getDeviceId(), name:getAdminName(), at:new Date().toISOString(), page:currentAdminPage};
+    }catch(e){
+      status.textContent='⚠️ Tak dapat sambung ke Google Sheet. Padam dibatalkan supaya data tidak bercanggah.';
+      return;
+    }
+  }
+  state.months=[]; state.withdrawals=[]; state.tabungWithdrawals=[]; state.deductTemplate=null;
+  bumpMeta('Padam SEMUA data (rekod bulanan, tabung, sejarah pengeluaran)');
+  setDirty(true); persistLocal();
+  editingMonthId=null; resetAddForm(); renderMonths(); renderSummary(); renderTabungPage(); renderMeta();
+  dvState=dvNormalize(JSON.parse(JSON.stringify(state))); dvPersist(); dvRenderAll();
+  if(!sheetUrl){ status.textContent='✅ Data dipadam di peranti ini. (Tiada Google Sheet URL disambung.)'; return; }
+  status.textContent='Memadam di Google Sheet…';
+  try{
+    clearTimeout(syncTimer); syncTimer=null;
+    await pushState();
+    await new Promise(r=>setTimeout(r,1500));
+    const chk=normalize(await cloudGet());
+    if(chk.months.length===0 && chk.withdrawals.length===0 && chk.tabungWithdrawals.length===0){
+      status.textContent='✅ Semua data telah dipadam (peranti ini & Google Sheet) — disahkan.';
+    } else {
+      status.textContent='⚠️ Data di peranti ini dipadam, tetapi Google Sheet MASIH ada data. Kemungkinan Apps Script mengabaikan data kosong — perlu semak kod Apps Script.';
+    }
+  }catch(e){
+    status.textContent='⚠️ Data dipadam di peranti ini, tapi gagal sync/sahkan dengan Google Sheet — semak internet dan tekan "Sync now".';
+  }
+}
+document.getElementById('btnClearAllData').addEventListener('click', clearAllData);
+
+function dvRenderMetaInfo(){
+  const el=document.getElementById('dvMetaInfo'); if(!el) return;
+  const m=(dvState&&dvState.meta)||{};
+  const parts=[];
+  if(m.lock && m.lock.deviceId!==getDeviceId() && lockFresh(m.lock)) parts.push('✏️ '+escHtml(m.lock.name||'Admin')+' sedang menguruskan data sekarang.');
+  if(m.updatedBy) parts.push('Kemas kini data oleh <b>'+escHtml(m.updatedBy)+'</b> · '+fmtDT(m.updatedAt));
+  el.innerHTML=parts.join('<br>');
+}
+function dvUpdatedLabel(){
+  const t=dvLoadUpdatedAt();
+  if(!t) return 'No data refreshed yet.';
+  const d=new Date(t);
+  return 'Last updated: ' + d.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}) + ', ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+function dvYears(){
+  const ys=[...new Set(dvState.months.map(m=>m.tahun||new Date().getFullYear()))];
+  ys.sort((a,b)=>b-a);
+  return ys;
+}
+function dvRenderYearTabs(){
+  const wrap=document.getElementById('dvYearTabs'); wrap.innerHTML='';
+  const ys=dvYears();
+  if(ys.length===0){ wrap.innerHTML='<span class="empty">No monthly records.</span>'; return; }
+  if(!dvSelectedYear || !ys.includes(dvSelectedYear)) dvSelectedYear=ys[0];
+  ys.forEach(y=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='year-tab'+(y===dvSelectedYear?' active':'');
+    b.textContent=y;
+    b.addEventListener('click', ()=>{ dvSelectedYear=y; dvExpandedMonths.clear(); dvRenderAll(); });
+    wrap.appendChild(b);
+  });
+}
+function dvRenderYearSummary(){
+  const monthsInYear = dvState.months.filter(m=>(m.tahun||new Date().getFullYear())===dvSelectedYear);
+  const jumlah = monthsInYear.reduce((s,m)=>s+(Number(m.jumlah)||0),0);
+  const baki = monthsInYear.reduce((s,m)=>s+(Number(m.baki)||0),0);
+  const potongan = jumlah-baki;
+  document.getElementById('dvYJumlah').textContent = rm(jumlah);
+  document.getElementById('dvYPotongan').textContent = rm(potongan);
+  document.getElementById('dvYBaki').textContent = rm(baki);
+}
+function dvRenderSummary(){
+  const wrap=document.getElementById('dvSummaryList'); wrap.innerHTML='';
+  computeBalances(dvState).forEach((b,i)=>{
+    const row=document.createElement('div'); row.className='summary-row';
+    row.innerHTML=`<div><div class="summary-name">${escHtml(b.name)}</div><div class="summary-nums">Savings: ${rm(b.simpanan)} &nbsp;·&nbsp; Already withdrawn: ${rm(b.diambil)}</div></div>`;
+    wrap.appendChild(row);
+
+    // Show this portion's full withdrawal/transfer history directly — no click needed.
+    const hist=(dvState.withdrawals||[]).filter(w=>w.i===i).sort((a,c)=>new Date(c.date)-new Date(a.date));
+    if(hist.length){
+      const box=document.createElement('div'); box.className='tabung-item';
+      hist.forEach(w=>{
+        const wr=document.createElement('div'); wr.className='person-row';
+        const dt=new Date(w.date);
+        const dateStr=isNaN(dt) ? '' : dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+        let extra='';
+        if(w.type==='transfer_out') extra=' · Transferred to '+escHtml(dvState.names[w.to]||'—');
+        else if(w.type==='transfer_in') extra=' · Received from '+escHtml(dvState.names[w.from]||'—');
+        const noteStr = w.note ? ' — '+escHtml(w.note) : '';
+        wr.innerHTML=`<span>${rm(w.amount)} — ${dateStr}${extra}${noteStr}</span>`;
+        box.appendChild(wr);
+      });
+      wrap.appendChild(box);
+    }
+  });
+  if(computeBalances(dvState).length===0){ wrap.innerHTML='<p class="empty">No portions yet.</p>'; }
+}
+function dvRenderMonths(){
+  const list=document.getElementById('dvMonthsList');
+  const monthsInYear = dvState.months.filter(m=>(m.tahun||new Date().getFullYear())===dvSelectedYear);
+  if(monthsInYear.length===0){ list.innerHTML='<p class="empty">No records for this year.</p>'; return; }
+  list.innerHTML='';
+  monthsInYear.forEach(m=>{
+    const card=document.createElement('div'); card.className='month-card';
+    const head=document.createElement('div'); head.className='month-head';
+    head.innerHTML=`<h3>${escHtml(m.bulan)} ${escHtml(m.tahun||'')}</h3>`;
+    card.appendChild(head);
+
+    // Everything shown directly — no tap/collapse.
+    const box=document.createElement('div');
+    box.innerHTML = `
+      ${(m.tan||m.hargaTan) ? `
+      <div class="bignum" style="font-size:.9rem;"><span>Buah sawit dihantar</span><b>${(Number(m.tan)||0).toFixed(2)} tan</b></div>
+      <div class="bignum" style="font-size:.9rem;"><span>Harga sawit</span><b>${rm(m.hargaTan||0)} / tan</b></div>` : ''}
+      <div class="bignum" style="font-size:.9rem;"><span>Amount received</span><b>${rm(m.jumlah||0)}</b></div>
+      <div class="bignum" style="font-size:.9rem;"><span>Total deducted</span><b>${rm((m.jumlah||0)-(m.baki||0))}</b></div>
+      <div class="bignum" style="font-size:.9rem;"><span>Balance divided</span><b>${rm(m.baki)}</b></div>
+      <div class="bignum" style="font-size:.9rem;"><span>Share per portion</span><b>${rm(m.bahagian)}</b></div>`;
+    card.appendChild(box);
+    if(m.deducts && m.deducts.length){
+      const dwrap=document.createElement('div'); dwrap.className='month-deducts';
+      const dlabel=document.createElement('div'); dlabel.className='month-deducts-label'; dlabel.textContent='Deductions:';
+      dwrap.appendChild(dlabel);
+      const dul=document.createElement('ul'); dul.className='month-deducts-list';
+      m.deducts.forEach(d=>{
+        const li=document.createElement('li');
+        li.textContent = d.label+' — '+rm(d.amount);
+        dul.appendChild(li);
+      });
+      dwrap.appendChild(dul);
+      card.appendChild(dwrap);
+    }
+    list.appendChild(card);
+  });
+}
+function dvRenderAll(){
+  document.getElementById('dvUpdatedAt').textContent = dvUpdatedLabel();
+  dvRenderMetaInfo();
+  if(!dvState){ document.getElementById('dvDashboardBody').style.display='none'; return; }
+  document.getElementById('dvDashboardBody').style.display='';
+  dvRenderYearTabs();
+  dvRenderYearSummary();
+  dvRenderSummary();
+  dvRenderMonths();
+}
+
+/* ============================================================
+   URUS MODULE (manager — add/edit/delete, tabung, names, PDF, sync)
+   ============================================================ */
+const KEY='felda-urus-v1';
+const DEFAULT_NAMES=['Along','Angah','Ayang','Arul','Manja','Ucu','Wakaf'];
+
+function defaultState(){ return {names:DEFAULT_NAMES.slice(), months:[], withdrawals:[], tabungWithdrawals:[], deductTemplate:null}; }
+function normalize(s){
+  if(!s || typeof s!=='object') s=defaultState();
+  if(!Array.isArray(s.names) || s.names.length===0) s.names=DEFAULT_NAMES.slice();
+  if(!Array.isArray(s.months)) s.months=[];
+  if(!Array.isArray(s.withdrawals)) s.withdrawals=[];
+  if(!Array.isArray(s.tabungWithdrawals)) s.tabungWithdrawals=[];
+  if(s.deductTemplate===undefined) s.deductTemplate=null;
+  if(!s.meta || typeof s.meta!=='object') s.meta={};
+  if(typeof s.meta.rev!=='number') s.meta.rev=0;
+  if(!Array.isArray(s.meta.log)) s.meta.log=[];
+  if(s.meta.lock===undefined) s.meta.lock=null;
+  if(s.templateVersion!==2){
+    if(s.deductTemplate && s.deductTemplate.length){
+      s.deductTemplate = s.deductTemplate.filter(d=>!/tabung|savings fund/i.test(d.label||'')).map(d=>({label:d.label, amount:d.amount}));
+    }
+    s.deductTemplate = null;
+    s.templateVersion = 2;
+  }
+  return s;
+}
+function loadLocal(){
+  try{ const raw=localStorage.getItem(KEY); if(raw) return normalize(JSON.parse(raw)); }catch(e){}
+  return normalize(defaultState());
+}
+let state = loadLocal();
+let baseRev = (state.meta && state.meta.rev) || 0;   // revision of the cloud copy this device last saw
+let editingMonthId=null;
+
+/* ---------- Admin identity, cloud read/write, edit-lock, history ---------- */
+const NAME_KEY='felda-admin-name', DEVICE_KEY='felda-device-id', DIRTY_KEY='felda-urus-dirty';
+const LOCK_TTL=90000;   // lock is considered free if no heartbeat for 90s
+function getDeviceId(){
+  try{ let id=localStorage.getItem(DEVICE_KEY); if(!id){ id='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem(DEVICE_KEY,id); } return id; }
+  catch(e){ if(!window.__devId) window.__devId='d'+Math.random().toString(36).slice(2,10); return window.__devId; }
+}
+function getAdminName(){ try{ return localStorage.getItem(NAME_KEY)||''; }catch(e){ return ''; } }
+function setAdminName(n){ try{ localStorage.setItem(NAME_KEY,n); }catch(e){} }
+function isDirty(){ try{ return localStorage.getItem(DIRTY_KEY)==='1'; }catch(e){ return false; } }
+function setDirty(v){ try{ if(v) localStorage.setItem(DIRTY_KEY,'1'); else localStorage.removeItem(DIRTY_KEY); }catch(e){} }
+function persistLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+function lockFresh(lk){ return !!(lk && lk.at && (Date.now()-new Date(lk.at).getTime())<LOCK_TTL); }
+function escHtml(t){ return String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtDT(iso){
+  const d=new Date(iso); if(!iso||isNaN(d)) return '';
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+
+function cloudGet(){
+  return new Promise((resolve,reject)=>{
+    if(!sheetUrl){ reject(new Error('no-url')); return; }
+    const cb='feldaGet_'+Date.now()+'_'+Math.floor(Math.random()*1e6);
+    const sc=document.createElement('script'); let done=false;
+    const cleanup=()=>{ clearTimeout(t); sc.remove(); try{ delete window[cb]; }catch(e){ window[cb]=undefined; } };
+    const t=setTimeout(()=>{ if(done) return; done=true; cleanup(); reject(new Error('timeout')); },15000);
+    window[cb]=d=>{ if(done) return; done=true; cleanup(); if(!d || d.ok===false) reject(new Error((d&&d.error)||'bad-data')); else resolve(d); };
+    sc.onerror=()=>{ if(done) return; done=true; cleanup(); reject(new Error('network')); };
+    sc.src=sheetUrl+'?callback='+encodeURIComponent(cb)+'&_='+Date.now();
+    document.body.appendChild(sc);
+  });
+}
+async function pushState(){
+  const revSent=state.meta.rev;
+  const res=await fetch(sheetUrl, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(state) });
+  let out=null; try{ out=await res.json(); }catch(e){}
+  if(out && out.ok===false) throw new Error(out.error||'server-error');
+  baseRev=revSent;
+  if(state.meta.rev===revSent) setDirty(false);
+}
+function bumpMeta(action){
+  const m=state.meta;
+  m.rev=(m.rev||0)+1;
+  m.updatedBy=getAdminName()||'—';
+  m.updatedAt=new Date().toISOString();
+  if(action){ m.log.unshift({who:m.updatedBy, at:m.updatedAt, text:action}); if(m.log.length>60) m.log.length=60; }
+}
+function renderMeta(){
+  const m=state.meta;
+  const line=document.getElementById('urusMetaLine');
+  if(line) line.innerHTML = m.updatedBy ? 'Kemas kini terakhir oleh <b>'+escHtml(m.updatedBy)+'</b> · '+fmtDT(m.updatedAt) : 'Belum ada sejarah kemas kini.';
+  const lbl=document.getElementById('adminNameLabel'); if(lbl) lbl.textContent=getAdminName()||'—';
+  const wrap=document.getElementById('historyList'); if(!wrap) return;
+  wrap.innerHTML='';
+  if(!m.log.length){ wrap.innerHTML='<p class="empty">Tiada sejarah lagi.</p>'; return; }
+  m.log.slice(0,30).forEach(e=>{
+    const row=document.createElement('div'); row.className='person-row';
+    row.style.flexDirection='column'; row.style.alignItems='flex-start'; row.style.gap='2px';
+    row.innerHTML='<span><b>'+escHtml(e.who)+'</b> — '+escHtml(e.text)+'</span><span style="font-size:.74rem;opacity:.6;">'+fmtDT(e.at)+'</span>';
+    wrap.appendChild(row);
+  });
+}
+
+/* --- name prompt --- */
+function ensureAdminName(){
+  return new Promise(resolve=>{
+    if(getAdminName()){ resolve(true); return; }
+    askAdminName(resolve);
+  });
+}
+function askAdminName(done){
+  const ov=document.getElementById('nameOverlay'), inp=document.getElementById('adminNameInput');
+  inp.value=getAdminName(); ov.style.display='flex'; inp.focus();
+  const finish=ok=>{ ov.style.display='none'; document.getElementById('nameSave').onclick=null; document.getElementById('nameCancel').onclick=null; if(done) done(ok); };
+  document.getElementById('nameSave').onclick=()=>{ const v=inp.value.trim(); if(!v){ inp.focus(); return; } setAdminName(v); renderMeta(); finish(true); };
+  document.getElementById('nameCancel').onclick=()=>finish(false);
+}
+document.getElementById('btnChangeName').addEventListener('click', ()=>askAdminName());
+
+/* --- busy modal --- */
+let busyRetryFn=null;
+function showBusy(title,msg,retry){
+  document.getElementById('busyTitle').textContent=title;
+  document.getElementById('busyMsg').innerHTML=msg;
+  busyRetryFn=retry||null;
+  document.getElementById('busyRetry').style.display = retry ? '' : 'none';
+  document.getElementById('busyOverlay').style.display='flex';
+}
+document.getElementById('busyClose').addEventListener('click', ()=>{ document.getElementById('busyOverlay').style.display='none'; });
+document.getElementById('busyRetry').addEventListener('click', ()=>{ document.getElementById('busyOverlay').style.display='none'; if(busyRetryFn) busyRetryFn(); });
+
+/* --- edit lock: only one admin in Urus / Settings at a time --- */
+let lockHeld=false, hbTimer=null, currentAdminPage='urus';
+async function acquireLock(page){
+  if(!sheetUrl) return {ok:true, offline:true};
+  let cloud;
+  try{ cloud=normalize(await cloudGet()); }catch(e){ return {ok:false, error:'offline'}; }
+  const me=getDeviceId(), lk=cloud.meta.lock;
+  if(lk && lk.deviceId!==me && lockFresh(lk)) return {ok:false, holder:lk};
+  if(isDirty() && cloud.meta.rev>baseRev){
+    if(!confirm('Ada perubahan di peranti ini yang belum sempat sync, tetapi data di cloud sudah dikemas kini oleh '+(cloud.meta.updatedBy||'admin lain')+'.\n\nOK = guna data cloud (perubahan di peranti ini dibuang)\nCancel = batal masuk')) return {ok:false, error:'conflict'};
+    setDirty(false); state=cloud;
+  } else if(!isDirty()){
+    state=cloud;          // always start an admin session from the latest cloud copy
+  }                       // (dirty + cloud not newer -> keep local unsynced edits and push them)
+  baseRev=cloud.meta.rev>state.meta.rev ? cloud.meta.rev : state.meta.rev;
+  state.meta.lock={deviceId:me, name:getAdminName(), at:new Date().toISOString(), page};
+  persistLocal();
+  try{ await pushState(); }catch(e){ return {ok:false, error:'offline'}; }
+  setTimeout(verifyCloudKeepsMeta, 3500);
+  return {ok:true};
+}
+async function verifyCloudKeepsMeta(){
+  if(!lockHeld || !sheetUrl) return;
+  try{
+    const c=normalize(await cloudGet());
+    const okMeta = c.meta.lock && c.meta.lock.deviceId===getDeviceId();
+    if(!okMeta && lockHeld){
+      const line=document.getElementById('urusMetaLine');
+      if(line) line.innerHTML='⚠️ Google Sheet (Apps Script) belum simpan maklumat lock &amp; sejarah — kod Apps Script perlu dikemas kini supaya fungsi ini berkesan.';
+    }
+  }catch(e){}
+}
+async function heartbeat(){
+  if(!lockHeld || !sheetUrl || syncTimer) return;
+  try{
+    const c=normalize(await cloudGet());
+    const lk=c.meta.lock, me=getDeviceId();
+    if(lk && lk.deviceId!==me && lockFresh(lk)){ lockLost(lk); return; }
+    if(c.meta.rev>baseRev && !isDirty()){ state=c; baseRev=c.meta.rev; persistLocal(); urusRenderAll(); renderMeta(); }
+    state.meta.lock={deviceId:me, name:getAdminName(), at:new Date().toISOString(), page:currentAdminPage};
+    await pushState();
+  }catch(e){}
+}
+function startHeartbeat(){ stopHeartbeat(); hbTimer=setInterval(heartbeat,30000); }
+function stopHeartbeat(){ if(hbTimer){ clearInterval(hbTimer); hbTimer=null; } }
+function lockLost(lk){
+  lockHeld=false; stopHeartbeat();
+  actuallyShowTopPage('dashboard');
+  showBusy('🔒 Sesi diambil alih','<b>'+escHtml(lk.name||'Admin lain')+'</b> sedang menggunakan '+(lk.page==='settings'?'Settings':'Urus')+'. Anda telah dikeluarkan supaya data tidak bertindih.');
+}
+function releaseLock(){
+  stopHeartbeat();
+  if(!lockHeld) return;
+  lockHeld=false;
+  if(state.meta.lock && state.meta.lock.deviceId===getDeviceId()){
+    state.meta.lock=null; persistLocal();
+    if(sheetUrl){ try{ fetch(sheetUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(state),keepalive:true}).catch(()=>{}); }catch(e){} }
+  }
+}
+async function enterAdmin(page){
+  currentAdminPage=page;
+  if(!(await ensureAdminName())) return;
+  if(!lockHeld){
+    document.body.style.cursor='wait';
+    const r=await acquireLock(page);
+    document.body.style.cursor='';
+    if(!r.ok){
+      if(r.holder){
+        showBusy('🔒 Sedang digunakan','<b>'+escHtml(r.holder.name||'Admin lain')+'</b> sedang membuka '+(r.holder.page==='settings'?'Settings':'Urus')+' (sejak '+fmtDT(r.holder.at)+'). Tunggu dia keluar dahulu supaya data tidak bertindih.', ()=>enterAdmin(page));
+        return;
+      }
+      if(r.error==='offline' && page==='settings'){ actuallyShowTopPage(page); renderMeta(); return; }  // must still be able to fix the Sheet URL
+      if(r.error==='offline'){ showBusy('⚠️ Tak dapat sambung ke cloud','Urus tidak boleh dibuka tanpa sambungan ke Google Sheet, supaya data lama di peranti ini tidak menimpa data terkini. Semak internet / Sheet URL di Settings.', ()=>enterAdmin(page)); return; }
+      return;
+    }
+    lockHeld = !r.offline;
+    if(lockHeld) startHeartbeat();
+  }
+  actuallyShowTopPage(page);
+  renderMeta();
+}
+window.addEventListener('pagehide', ()=>releaseLock());
+document.addEventListener('visibilitychange', async ()=>{
+  if(document.visibilityState!=='visible' || !lockHeld) return;
+  const r=await acquireLock(currentAdminPage);
+  if(!r.ok){ lockHeld=false; stopHeartbeat(); actuallyShowTopPage('dashboard'); if(r.holder) lockLost(r.holder); }
+  else { urusRenderAll(); renderMeta(); }
+});
+
+let syncTimer=null;
+async function syncToSheet(){
+  if(!sheetUrl) return;
+  setSyncStatus('Syncing…');
+  try{
+    const c=normalize(await cloudGet());
+    if(c.meta.rev>baseRev){
+      setSyncStatus('⚠️ Sync dibatalkan: cloud dikemas kini oleh '+(c.meta.updatedBy||'admin lain')+'. Tekan "Refresh data dari Cloud" dahulu.');
+      alert('Data di cloud lebih baru (dikemas kini oleh '+(c.meta.updatedBy||'admin lain')+'). Sync dibatalkan supaya data lama tidak menimpa data baru.\n\nTekan "🔄 Refresh data dari Cloud" untuk ambil data terkini.');
+      return;
+    }
+    await pushState();
+    setSyncStatus('✅ Synced at ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+    dvRefreshFromSheet();
+  }catch(e){
+    setSyncStatus('⚠️ Sync failed — check your internet connection / URL. Your records are still safely saved on this device.');
+  }
+}
+function scheduleSync(){
+  if(!sheetUrl) return;
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(()=>{ syncTimer=null; syncToSheet(); }, 700);
+}
+function save(action){
+  bumpMeta(action);
+  setDirty(true);
+  persistLocal();
+  scheduleSync();
+  renderMeta();
+}
+
+const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function monthNameToNum(name){
+  const idx=MONTH_NAMES.findIndex(m=>m.toLowerCase()===String(name||'').trim().toLowerCase());
+  return idx>=0 ? idx+1 : (new Date().getMonth()+1);
+}
+function setBulanTahunInput(bulan,tahun){
+  const y=tahun||new Date().getFullYear();
+  const mnum=monthNameToNum(bulan);
+  document.getElementById('fBulanTahun').value = y+'-'+String(mnum).padStart(2,'0');
+}
+function getBulanTahunFromInput(){
+  const val=document.getElementById('fBulanTahun').value;
+  if(!val) return {bulan:'', tahun:new Date().getFullYear()};
+  const [y,m]=val.split('-').map(Number);
+  return {bulan:MONTH_NAMES[m-1]||'', tahun:y};
+}
+
+let namesDraft = state.names.slice();
+function openNamesPage(){ namesDraft = state.names.slice(); renderNamesPage(); }
+function namesDirty(){ return JSON.stringify(namesDraft) !== JSON.stringify(state.names); }
+function refreshNamesStatus(){
+  const btn=document.getElementById('btnSaveNames');
+  const dirty=namesDirty();
+  btn.disabled=!dirty;
+  document.getElementById('namesStatus').textContent = dirty ? 'You have unsaved changes.' : 'No changes.';
+}
+function renderNamesPage(){
+  const wrap=document.getElementById('namesList'); wrap.innerHTML='';
+  namesDraft.forEach((n,i)=>{
+    const row=document.createElement('div'); row.className='bahagian-row';
+    const inp=document.createElement('input'); inp.type='text'; inp.value=n; inp.placeholder='Portion name';
+    inp.addEventListener('input', e=>{ namesDraft[i]=e.target.value; refreshNamesStatus(); });
+    const rmv=document.createElement('button'); rmv.type='button'; rmv.textContent='✕';
+    rmv.addEventListener('click', ()=>{ namesDraft.splice(i,1); renderNamesPage(); refreshNamesStatus(); });
+    row.appendChild(inp); row.appendChild(rmv); wrap.appendChild(row);
+  });
+}
+document.getElementById('btnAddName').addEventListener('click', ()=>{ namesDraft.push(''); renderNamesPage(); refreshNamesStatus(); });
+document.getElementById('btnSaveNames').addEventListener('click', ()=>{
+  const cleaned = namesDraft.map((n,i)=>n.trim()||('Portion '+(i+1))).filter(Boolean);
+  if(cleaned.length===0){ alert('There must be at least 1 portion.'); return; }
+  state.names = cleaned;
+  namesDraft = cleaned.slice();
+  save('Kemas kini nama portion'); renderNamesPage(); refreshNamesStatus(); renderMonths(); renderSummary();
+  document.getElementById('namesStatus').textContent='✅ Saved.';
+});
+
+function defaultDeductions(){
+  return [
+    {label:'BK Lot Utama Tanam', amount:''},
+    {label:'Pokok pinjaman pembesaran', amount:''},
+    {label:'Tanam semula kali kedua', amount:''},
+    {label:'Potongan meja', amount:''},
+    {label:'Kecerian kampung', amount:''},
+    {label:'Upah ijan', amount:''},
+    {label:'bill Api', amount:''},
+    {label:'bill air', amount:''},
+    {label:'Baja, racun, rumput, DLL', amount:''}
+  ];
+}
+function deductionsFromTemplate(){
+  return (state.deductTemplate && state.deductTemplate.length)
+    ? state.deductTemplate.map(d=>({label:d.label, amount:(d.amount!==undefined && d.amount!==null)?d.amount:''}))
+    : defaultDeductions();
+}
+let deductions = deductionsFromTemplate();
+function saveTemplate(){ state.deductTemplate = deductions.map(d=>({label:d.label, amount:d.amount})); save(); }
+
+function renderDeductRows(){
+  const wrap=document.getElementById('deductRows'); wrap.innerHTML='';
+  deductions.forEach((d,i)=>{
+    const row=document.createElement('div'); row.className='deduct-row';
+    const labelInp=document.createElement('input'); labelInp.type='text'; labelInp.placeholder='Deduction type'; labelInp.value=d.label;
+    labelInp.addEventListener('input', e=>{ deductions[i].label=e.target.value; saveTemplate(); });
+    const amtInp=document.createElement('input'); amtInp.type='number'; amtInp.placeholder='0.00'; amtInp.value=d.amount;
+    amtInp.addEventListener('input', e=>{ deductions[i].amount=e.target.value; computeBaki(); saveTemplate(); });
+    const rmBtn=document.createElement('button'); rmBtn.type='button'; rmBtn.textContent='✕';
+    rmBtn.addEventListener('click', ()=>{ deductions.splice(i,1); renderDeductRows(); computeBaki(); saveTemplate(); });
+    row.appendChild(labelInp); row.appendChild(amtInp); row.appendChild(rmBtn); wrap.appendChild(row);
+  });
+}
+document.getElementById('btnAddDeduct').addEventListener('click', ()=>{ deductions.push({label:'', amount:''}); renderDeductRows(); saveTemplate(); });
+
+function computeHargaTan(){
+  const jumlah=Number(document.getElementById('fJumlah').value)||0;
+  const tan=Number(document.getElementById('fTan').value)||0;
+  document.getElementById('fHargaTan').value = tan>0 ? (jumlah/tan).toFixed(2) : '';
+}
+function computeBaki(){
+  computeHargaTan();
+  const jumlah=Number(document.getElementById('fJumlah').value)||0;
+  const totalDeductOnly = deductions.reduce((s,d)=>s+(Number(d.amount)||0),0);
+  const tabungAmt = Number(document.getElementById('fTabung').value)||0;
+  const totalPotongan = totalDeductOnly + tabungAmt;
+  const baki = Math.max(0, jumlah - totalPotongan);
+  document.getElementById('fPotongan').textContent = rm(totalPotongan);
+  document.getElementById('fBaki').textContent = rm(baki);
+  document.getElementById('fBahagian').textContent = rm(baki/(state.names.length||1));
+  return baki;
+}
+document.getElementById('fJumlah').addEventListener('input', computeBaki);
+document.getElementById('fTan').addEventListener('input', computeBaki);
+document.getElementById('fTabung').addEventListener('input', computeBaki);
+
+function resetAddForm(){
+  editingMonthId=null;
+  document.getElementById('btnAdd').textContent='Save this month\'s record';
+  document.getElementById('btnCancelEdit').style.display='none';
+  document.getElementById('fBulanTahun').value = new Date(Date.now()+8*3600*1000).toISOString().slice(0,7);
+  document.getElementById('fJumlah').value=''; document.getElementById('fTabung').value='';
+  document.getElementById('fTan').value=''; computeHargaTan();
+  deductions = deductionsFromTemplate(); renderDeductRows(); computeBaki();
+  document.querySelectorAll('.month-card.editing').forEach(c=>c.classList.remove('editing'));
+}
+document.getElementById('btnCancelEdit').addEventListener('click', resetAddForm);
+
+document.getElementById('btnAdd').addEventListener('click', ()=>{
+  const {bulan,tahun}=getBulanTahunFromInput();
+  if(!bulan){ alert('Please pick the month first.'); return; }
+  const jumlahVal=Number(document.getElementById('fJumlah').value)||0;
+  const tanVal=Number(document.getElementById('fTan').value)||0;
+  const hargaTanVal=Number(document.getElementById('fHargaTan').value)||0;
+  const baki=computeBaki();
+  const bahagian = baki/(state.names.length||1);
+  const usedDeducts = deductions.filter(d=>d.label.trim() || Number(d.amount)>0).map(d=>({label:d.label.trim()||'Deduction', amount:Number(d.amount)||0}));
+  const tabungAmt = Number(document.getElementById('fTabung').value)||0;
+  if(tabungAmt>0){ usedDeducts.push({label:'Simpanan Tabung', amount:tabungAmt, isTabung:true}); }
+
+  if(editingMonthId){
+    const m=state.months.find(x=>x.id===editingMonthId);
+    if(m){ m.bulan=bulan; m.tahun=tahun; m.jumlah=jumlahVal; m.tan=tanVal; m.hargaTan=hargaTanVal; m.baki=baki; m.bahagian=bahagian; m.deducts=usedDeducts; }
+  } else {
+    state.months.unshift({ id: Date.now(), bulan, tahun, jumlah: jumlahVal, tan: tanVal, hargaTan: hargaTanVal, baki, bahagian, deducts: usedDeducts, statuses: new Array(state.names.length).fill('simpan') });
+  }
+  save((editingMonthId?'Edit':'Tambah')+' rekod '+bulan+' '+tahun); saveTemplate(); resetAddForm(); computeBaki(); renderMonths(); renderSummary();
+});
+
+function startEditMonth(m){
+  editingMonthId=m.id;
+  setBulanTahunInput(m.bulan, m.tahun);
+  document.getElementById('fJumlah').value=m.jumlah||'';
+  document.getElementById('fTan').value=m.tan||'';
+  computeHargaTan();
+  const tabungEntry = (m.deducts||[]).find(isTabungDeduct);
+  const otherDeducts = (m.deducts||[]).filter(d=>!isTabungDeduct(d)).map(d=>({label:d.label, amount:d.amount}));
+  const existingLabels = new Set(otherDeducts.map(d=>(d.label||'').trim().toLowerCase()));
+  deductionsFromTemplate().forEach(td=>{
+    const key=(td.label||'').trim().toLowerCase();
+    if(key && !existingLabels.has(key)){
+      otherDeducts.push({label:td.label, amount:''});
+      existingLabels.add(key);
+    }
+  });
+  deductions = otherDeducts.length ? otherDeducts : defaultDeductions();
+  document.getElementById('fTabung').value = tabungEntry ? tabungEntry.amount : '';
+  renderDeductRows(); computeBaki();
+  document.getElementById('btnAdd').textContent='Update this record';
+  document.getElementById('btnCancelEdit').style.display='block';
+  renderMonths();
+  document.getElementById('addSection').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderMonths(){
+  const list=document.getElementById('uMonthsList');
+  if(state.months.length===0){ list.innerHTML='<p class="empty">No records yet.</p>'; return; }
+  list.innerHTML='';
+  state.months.forEach(m=>{
+    const card=document.createElement('div'); card.className='month-card'+(editingMonthId===m.id?' editing':'');
+    const head=document.createElement('div'); head.className='month-head';
+    head.innerHTML=`<h3>${escHtml(m.bulan)} ${escHtml(m.tahun||'')}</h3><span>Balance ${rm(m.baki)} · ${rm(m.bahagian)} / portion</span>`;
+    card.appendChild(head);
+    if(m.deducts && m.deducts.length){
+      const dline=document.createElement('div'); dline.className='month-deducts';
+      dline.textContent='Deductions: ' + m.deducts.map(d=>d.label+' '+rm(d.amount)).join(' · ');
+      card.appendChild(dline);
+    }
+    state.names.forEach((name,i)=>{
+      const row=document.createElement('div'); row.className='person-row';
+      row.innerHTML=`<span>${escHtml(name)}</span><span>${rm(m.bahagian)}</span>`;
+      card.appendChild(row);
+    });
+    const btnRow=document.createElement('div'); btnRow.style.cssText='display:flex;gap:8px;margin-top:10px;';
+    const editBtn=document.createElement('button'); editBtn.className='btn-ghost'; editBtn.textContent='✎ Edit record';
+    editBtn.addEventListener('click', ()=>startEditMonth(m));
+    const del=document.createElement('button'); del.className='btn-ghost'; del.textContent='Delete';
+    del.addEventListener('click', ()=>{ if(confirm('Delete the record "'+m.bulan+' '+m.tahun+'"?')){ state.months=state.months.filter(x=>x.id!==m.id); if(editingMonthId===m.id) resetAddForm(); save('Padam rekod '+m.bulan+' '+m.tahun); renderMonths(); renderSummary(); } });
+    btnRow.appendChild(editBtn); btnRow.appendChild(del); card.appendChild(btnRow);
+    list.appendChild(card);
+  });
+}
+
+function isTabungDeduct(d){
+  if(d.isTabung===true) return true;
+  if(d.isTabung===false) return false;
+  return /tabung|savings fund/i.test(d.label||'');
+}
+function monthTabung(m){ return (m.deducts||[]).filter(isTabungDeduct).reduce((s,d)=>s+(Number(d.amount)||0),0); }
+function tabungYears(st){
+  st = st || state;
+  const ys=[...new Set(st.months.map(m=>m.tahun||new Date().getFullYear()))];
+  ys.sort((a,b)=>b-a);
+  return ys;
+}
+function tabungCollectedTotal(st){ st = st || state; return st.months.reduce((s,m)=>s+monthTabung(m),0); }
+function tabungWithdrawnTotal(st){ st = st || state; return (st.tabungWithdrawals||[]).reduce((s,w)=>s+(Number(w.amount)||0),0); }
+function tabungBalance(st){ st = st || state; return Math.max(0, tabungCollectedTotal(st) - tabungWithdrawnTotal(st)); }
+
+function renderTabungHistory(){
+  const wrap=document.getElementById('tabungWithdrawHistory'); wrap.innerHTML='';
+  const hist=(state.tabungWithdrawals||[]).map((w,wi)=>({...w, wi})).sort((a,c)=>new Date(c.date)-new Date(a.date));
+  if(hist.length===0) return;
+  const title=document.createElement('p'); title.className='hint'; title.style.margin='10px 0 4px'; title.textContent='Withdrawal history:';
+  wrap.appendChild(title);
+  hist.forEach(w=>{
+    const row=document.createElement('div'); row.className='person-row';
+    const dt=new Date(w.date); const dateStr=isNaN(dt)?'':dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    row.innerHTML=`<span>${rm(w.amount)} — ${dateStr}${w.note?' — '+escHtml(w.note):''}</span>`;
+    const undoBtn=document.createElement('button'); undoBtn.className='btn-ghost'; undoBtn.textContent='Undo';
+    undoBtn.addEventListener('click', ()=>{
+      if(confirm('Undo this Tabung withdrawal of '+rm(w.amount)+'?')){
+        state.tabungWithdrawals.splice(w.wi,1); save('Undo pengeluaran Tabung '+rm(w.amount)); renderTabungPage();
+      }
+    });
+    row.appendChild(undoBtn);
+    wrap.appendChild(row);
+  });
+}
+document.getElementById('btnTabungWithdraw').addEventListener('click', ()=>{
+  const bal=tabungBalance();
+  if(bal<=0){ alert('There is no Tabung balance available to withdraw yet.'); return; }
+  const val=prompt('Amount to withdraw from Tabung (available: '+rm(bal)+')', bal.toFixed(2));
+  if(val===null) return;
+  const amt=Number(val);
+  if(!amt || amt<=0 || amt>bal+0.001){ alert('Invalid amount.'); return; }
+  const note=prompt('What is this for? (optional) — e.g. "Kenduri kahwin Angah":', '') || '';
+  state.tabungWithdrawals.push({amount:amt, date:new Date().toISOString(), note:note.trim()});
+  save('Keluarkan dari Tabung '+rm(amt)); renderTabungPage();
+});
+
+let tabungYear=null, tabungExpanded=new Set();
+function renderTabungPage(){
+  document.getElementById('tabungAllTime').textContent = rm(tabungCollectedTotal());
+  document.getElementById('tabungWithdrawnTotal').textContent = rm(tabungWithdrawnTotal());
+  document.getElementById('tabungBalance').textContent = rm(tabungBalance());
+  renderTabungHistory();
+
+  const ys = tabungYears();
+  const tabWrap=document.getElementById('tabungYearTabs'); tabWrap.innerHTML='';
+  if(ys.length===0){ tabWrap.innerHTML='<span class="empty">No records yet.</span>'; }
+  if(!tabungYear || !ys.includes(tabungYear)) tabungYear=ys[0];
+  ys.forEach(y=>{
+    const b=document.createElement('button'); b.type='button'; b.className='year-tab'+(y===tabungYear?' active':'');
+    b.textContent=y;
+    b.addEventListener('click', ()=>{ tabungYear=y; tabungExpanded.clear(); renderTabungPage(); });
+    tabWrap.appendChild(b);
+  });
+
+  const monthsInYear = state.months.filter(m=>(m.tahun||new Date().getFullYear())===tabungYear);
+  document.getElementById('tabungYearTotal').textContent = rm(monthsInYear.reduce((s,m)=>s+monthTabung(m),0));
+
+  const list=document.getElementById('tabungMonthsList');
+  if(monthsInYear.length===0){ list.innerHTML='<p class="empty">No records for this year.</p>'; return; }
+  list.innerHTML='';
+  monthsInYear.forEach(m=>{
+    const card=document.createElement('div'); card.className='month-card';
+    const head=document.createElement('div'); head.className='month-head'; head.style.cursor='pointer';
+    const isOpen=tabungExpanded.has(m.id);
+    head.innerHTML=`<h3>${escHtml(m.bulan)} ${escHtml(m.tahun||'')}</h3><span>${rm(monthTabung(m))} ${isOpen?'▾':'▸'}</span>`;
+    head.addEventListener('click', ()=>{ if(tabungExpanded.has(m.id)) tabungExpanded.delete(m.id); else tabungExpanded.add(m.id); renderTabungPage(); });
+    card.appendChild(head);
+    if(isOpen){
+      const items=(m.deducts||[]).filter(isTabungDeduct);
+      if(items.length===0){
+        const p=document.createElement('p'); p.className='empty'; p.textContent='No Tabung deduction recorded this month.'; card.appendChild(p);
+      } else {
+        items.forEach(d=>{
+          const row=document.createElement('div'); row.className='person-row';
+          row.innerHTML=`<span>${escHtml(d.label)}</span><span>${rm(d.amount)}</span>`;
+          card.appendChild(row);
+        });
+      }
+    }
+    list.appendChild(card);
+  });
+}
+
+let summaryExpanded=new Set();
+function renderSummary(){
+  const wrap=document.getElementById('uSummaryList'); wrap.innerHTML='';
+  computeBalances(state).forEach((b,i)=>{
+    const row=document.createElement('div'); row.className='summary-row';
+    const info=document.createElement('div');
+    info.innerHTML=`<div class="summary-name">${escHtml(b.name)}</div><div class="summary-nums">Savings: ${rm(b.simpanan)} &nbsp;·&nbsp; Already withdrawn: ${rm(b.diambil)}</div>`;
+    row.appendChild(info);
+
+    const btnWrap=document.createElement('div'); btnWrap.style.cssText='display:flex;gap:6px;';
+    const isOpen=summaryExpanded.has(i);
+    const histBtn=document.createElement('button'); histBtn.className='btn-ghost'; histBtn.textContent = isOpen ? 'Hide history' : 'History';
+    histBtn.addEventListener('click', ()=>{ if(summaryExpanded.has(i)) summaryExpanded.delete(i); else summaryExpanded.add(i); renderSummary(); });
+    const btn=document.createElement('button'); btn.className='btn-ghost'; btn.textContent='Withdraw';
+    btn.disabled=b.simpanan<=0; if(b.simpanan<=0) btn.style.opacity='.4';
+    btn.addEventListener('click', ()=>openWithdrawModal(i));
+    btnWrap.appendChild(histBtn); btnWrap.appendChild(btn);
+    row.appendChild(btnWrap);
+    wrap.appendChild(row);
+
+    if(isOpen){
+      const box=document.createElement('div'); box.className='tabung-item';
+      const hist=state.withdrawals.map((w,wi)=>({...w, wi})).filter(w=>w.i===i).sort((a,c)=>new Date(c.date)-new Date(a.date));
+      if(hist.length===0){
+        box.innerHTML='<p class="empty">No withdrawals yet.</p>';
+      } else {
+        hist.forEach(w=>{
+          const wr=document.createElement('div'); wr.className='person-row';
+          const dt=new Date(w.date);
+          const dateStr=isNaN(dt) ? '' : dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+          let extra='';
+          if(w.type==='transfer_out') extra=' · Transferred to '+escHtml(state.names[w.to]||'—');
+          else if(w.type==='transfer_in') extra=' · Received from '+escHtml(state.names[w.from]||'—');
+          const noteStr = w.note ? ' — '+escHtml(w.note) : '';
+          wr.innerHTML=`<span>${rm(w.amount)} — ${dateStr}${extra}${noteStr}</span>`;
+          const undoBtn=document.createElement('button'); undoBtn.className='btn-ghost'; undoBtn.textContent='Undo';
+          undoBtn.addEventListener('click', ()=>{
+            if(confirm('Undo this entry of '+rm(w.amount)+' for '+b.name+'?')){
+              if(w.pairId){ state.withdrawals=state.withdrawals.filter(x=>x.pairId!==w.pairId); }
+              else { state.withdrawals.splice(w.wi,1); }
+              save('Undo transaksi '+rm(w.amount)+' ('+b.name+')'); renderSummary();
+            }
+          });
+          wr.appendChild(undoBtn);
+          box.appendChild(wr);
+        });
+      }
+      wrap.appendChild(box);
+    }
+  });
+}
+
+let modalPortionIndex=null;
+function openWithdrawModal(i){
+  modalPortionIndex=i;
+  const b=computeBalances(state)[i];
+  document.getElementById('wmTitle').textContent='Withdraw — '+state.names[i];
+  document.querySelectorAll('input[name=wmType]').forEach(r=>{ r.checked = r.value==='self'; });
+  document.getElementById('wmDestWrap').style.display='none';
+  const destSel=document.getElementById('wmDest'); destSel.innerHTML='';
+  state.names.forEach((n,idx)=>{
+    if(idx===i) return;
+    const o=document.createElement('option'); o.value=idx; o.textContent=n; destSel.appendChild(o);
+  });
+  document.getElementById('wmAmount').value = b.simpanan>0 ? b.simpanan.toFixed(2) : '';
+  document.getElementById('wmNote').value='';
+  document.getElementById('withdrawModal').style.display='flex';
+}
+function closeWithdrawModal(){ document.getElementById('withdrawModal').style.display='none'; modalPortionIndex=null; }
+document.getElementById('wmCancel').addEventListener('click', closeWithdrawModal);
+document.querySelectorAll('input[name=wmType]').forEach(r=>{
+  r.addEventListener('change', ()=>{
+    const isTransfer = document.querySelector('input[name=wmType]:checked').value==='transfer';
+    document.getElementById('wmDestWrap').style.display = isTransfer ? 'block' : 'none';
+  });
+});
+document.getElementById('wmConfirm').addEventListener('click', ()=>{
+  const i=modalPortionIndex; if(i===null) return;
+  const b=computeBalances(state)[i];
+  const amt=Number(document.getElementById('wmAmount').value);
+  if(!amt || amt<=0 || amt>b.simpanan+0.001){ alert('Invalid amount. Balance is '+rm(b.simpanan)+'.'); return; }
+  const note=document.getElementById('wmNote').value.trim();
+  const type=document.querySelector('input[name=wmType]:checked').value;
+  const now=new Date().toISOString();
+  let actText='';
+  if(type==='transfer'){
+    if(state.names.length<2){ alert('You need at least 2 portions to transfer.'); return; }
+    const destIdx=Number(document.getElementById('wmDest').value);
+    const pairId='tr'+Date.now()+Math.floor(Math.random()*100000);
+    state.withdrawals.push({i, amount:amt, date:now, note, type:'transfer_out', to:destIdx, pairId});
+    state.withdrawals.push({i:destIdx, amount:amt, date:now, note, type:'transfer_in', from:i, pairId});
+    actText='Pindah '+rm(amt)+' dari '+(state.names[i]||'—')+' ke '+(state.names[destIdx]||'—');
+  } else {
+    state.withdrawals.push({i, amount:amt, date:now, note, type:'withdraw'});
+    actText='Keluarkan '+rm(amt)+' ('+(state.names[i]||'—')+')';
+  }
+  save(actText); closeWithdrawModal(); renderSummary();
+});
+
+function urusRenderAll(){ renderDeductRows(); computeBaki(); renderMonths(); renderSummary(); }
+
+let downloadsCap=null;
+(async ()=>{ try{ downloadsCap = await claude.use('downloads'); }catch(e){ downloadsCap=null; } })();
+
+async function saveFile(filename, dataObj, isJson){
+  const blob = isJson ? new Blob([JSON.stringify(dataObj)], {type:'application/json'}) : dataObj;
+  if(downloadsCap){
+    try{ await downloadsCap.save({filename, data:blob}); }
+    catch(e){ alert('Could not save the file ('+(e&&e.code?e.code:'error')+').'); }
+  } else {
+    const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+}
+
+async function generatePdfReport(targetState, monthId){
+  targetState = targetState || state;
+  const reportMonths = monthId ? targetState.months.filter(m=>String(m.id)===String(monthId)) : targetState.months;
+  if(typeof window.jspdf === 'undefined'){ alert('The PDF tool is not ready yet, try again in a moment.'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'pt', format:'a4'});
+  const pageW=doc.internal.pageSize.getWidth(), pageH=doc.internal.pageSize.getHeight();
+  const marginX=42, contentW=pageW-marginX*2, footerY=pageH-30;
+  let y=58;
+
+  const COL_PALM=[38,83,63], COL_PALMD=[23,51,39], COL_GOLD=[184,134,43],
+        COL_INK=[27,43,34], COL_GREY=[110,110,110], COL_LINE=[205,213,199], COL_LIGHT=[238,242,234];
+
+  function newPage(){ doc.addPage(); y=58; }
+  function ensure(h){ if(y+h>footerY-14){ newPage(); } }
+
+  function sectionTitle(text){
+    ensure(34);
+    doc.setDrawColor.apply(doc,COL_GOLD); doc.setLineWidth(1.4);
+    doc.line(marginX,y,marginX+24,y);
+    doc.setFont('helvetica','bold'); doc.setFontSize(12.5); doc.setTextColor.apply(doc,COL_PALMD);
+    doc.text(text, marginX+32, y+4);
+    y+=18;
+    doc.setDrawColor.apply(doc,COL_LINE); doc.setLineWidth(0.6);
+    doc.line(marginX,y,marginX+contentW,y);
+    y+=14;
+    doc.setFont('helvetica','normal'); doc.setTextColor.apply(doc,COL_INK);
+  }
+
+  function paragraph(text,size){
+    size=size||10;
+    doc.setFont('helvetica','normal'); doc.setFontSize(size); doc.setTextColor.apply(doc,COL_INK);
+    const lines=doc.splitTextToSize(text, contentW);
+    lines.forEach(l=>{ ensure(size*1.3); doc.text(l, marginX, y); y+=size*1.3; });
+    y+=6;
+  }
+
+  function statCards(items){
+    const gap=10, ch=48;
+    const cw=(contentW-gap*(items.length-1))/items.length;
+    ensure(ch+12);
+    items.forEach((it,i)=>{
+      const cx=marginX+i*(cw+gap);
+      doc.setFillColor.apply(doc,COL_LIGHT); doc.setDrawColor.apply(doc,COL_LINE);
+      doc.roundedRect(cx,y,cw,ch,4,4,'FD');
+      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc,COL_GREY);
+      doc.text(it.label, cx+9, y+17, {maxWidth:cw-18});
+      doc.setFont('helvetica','bold'); doc.setFontSize(12.5); doc.setTextColor.apply(doc,COL_PALMD);
+      doc.text(it.value, cx+9, y+37, {maxWidth:cw-18});
+    });
+    y+=ch+16;
+    doc.setFont('helvetica','normal'); doc.setTextColor.apply(doc,COL_INK);
+  }
+
+  function drawTable(headers, rows, colWidths, aligns){
+    aligns = aligns || headers.map(()=>'left');
+    const padX=6, padY=6, headerSize=9, rowSize=9;
+    function cellLines(text,size,w){ doc.setFontSize(size); return doc.splitTextToSize(text===undefined||text===null?'—':String(text), Math.max(10,w-padX*2)); }
+    function rowHeight(cells,size){
+      let maxLines=1;
+      cells.forEach((c,i)=>{ maxLines=Math.max(maxLines, cellLines(c,size,colWidths[i]).length); });
+      return maxLines*(size*1.25)+padY*2;
+    }
+    function drawRowCells(cells,size,isHeader,fill){
+      const h=rowHeight(cells,size);
+      if(isHeader){ doc.setFillColor.apply(doc,COL_PALM); doc.rect(marginX,y,contentW,h,'F'); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255); }
+      else{
+        if(fill){ doc.setFillColor.apply(doc,COL_LIGHT); doc.rect(marginX,y,contentW,h,'F'); }
+        doc.setFont('helvetica','normal'); doc.setTextColor.apply(doc,COL_INK);
+      }
+      doc.setFontSize(size);
+      let cx=marginX;
+      cells.forEach((c,i)=>{
+        const lines=cellLines(c,size,colWidths[i]);
+        const isRight=aligns[i]==='right';
+        const tx = isRight ? cx+colWidths[i]-padX : cx+padX;
+        doc.text(lines, tx, y+padY+size*0.9, isRight?{align:'right'}:{});
+        cx+=colWidths[i];
+      });
+      doc.setDrawColor.apply(doc, isHeader?COL_PALMD:COL_LINE);
+      let bx=marginX;
+      colWidths.forEach(w=>{ doc.line(bx,y,bx,y+h); bx+=w; });
+      doc.line(bx,y,bx,y+h); doc.line(marginX,y+h,marginX+contentW,y+h);
+      y+=h;
+    }
+    ensure(rowHeight(headers,headerSize)+30);
+    drawRowCells(headers,headerSize,true,false);
+    rows.forEach((cells,ri)=>{
+      const h=rowHeight(cells,rowSize);
+      if(y+h>footerY-14){ newPage(); drawRowCells(headers,headerSize,true,false); }
+      drawRowCells(cells,rowSize,false, ri%2===1);
+    });
+    y+=14;
+  }
+
+  function drawFootersAndPageNumbers(){
+    const total=doc.internal.getNumberOfPages();
+    for(let p=1;p<=total;p++){
+      doc.setPage(p);
+      doc.setDrawColor.apply(doc,COL_LINE); doc.setLineWidth(0.6);
+      doc.line(marginX, footerY-10, pageW-marginX, footerY-10);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor.apply(doc,COL_GREY);
+      doc.text('Laporan Pengurusan Wang FELDA — Sulit & Peribadi', marginX, footerY+4);
+      doc.text('Muka surat '+p+' / '+total, pageW-marginX, footerY+4, {align:'right'});
+    }
+  }
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(17); doc.setTextColor.apply(doc,COL_PALMD);
+  doc.text('LAPORAN PENGURUSAN & AGIHAN WANG FELDA', marginX, y);
+  y+=16;
+  doc.setDrawColor.apply(doc,COL_GOLD); doc.setLineWidth(1.6);
+  doc.line(marginX,y,marginX+contentW,y);
+  y+=16;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor.apply(doc,COL_GREY);
+  doc.text('Disediakan pada: '+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}), marginX, y); y+=13;
+  doc.text('Skop laporan: '+(monthId ? (reportMonths.length?reportMonths[0].bulan+' '+reportMonths[0].tahun:'Bulan tidak dijumpai') : 'Semua rekod'), marginX, y); y+=13;
+  const monthsSorted=[...reportMonths].sort((a,b)=>(a.tahun-b.tahun)||(monthNameToNum(a.bulan)-monthNameToNum(b.bulan)));
+  const tempoh = monthsSorted.length ? (monthsSorted[0].bulan+' '+monthsSorted[0].tahun+'  —  '+monthsSorted[monthsSorted.length-1].bulan+' '+monthsSorted[monthsSorted.length-1].tahun) : 'Tiada rekod lagi';
+  doc.text('Tempoh rekod: '+tempoh, marginX, y); y+=24;
+  doc.setTextColor.apply(doc,COL_INK);
+
+  sectionTitle('A. Ringkasan Keseluruhan');
+  const totalFelda = reportMonths.reduce((s,m)=>s+(Number(m.jumlah)||0),0);
+  const totalDeduct = reportMonths.reduce((s,m)=>s+(m.deducts||[]).reduce((ss,d)=>ss+(Number(d.amount)||0),0),0);
+  const totalBaki = reportMonths.reduce((s,m)=>s+(Number(m.baki)||0),0);
+  statCards([
+    {label:'Jumlah FELDA Diterima', value:rm(totalFelda)},
+    {label:'Jumlah Potongan', value:rm(totalDeduct)},
+    {label:'Jumlah Diagihkan', value:rm(totalBaki)},
+    {label:'Baki Tabung Semasa', value:rm(tabungBalance(targetState))}
+  ]);
+
+  sectionTitle('B. Ringkasan Simpanan Mengikut Bahagian');
+  drawTable(
+    ['Bahagian','Jumlah Disimpan','Jumlah Diambil','Jumlah Keseluruhan'],
+    computeBalances(targetState).map(b=>[b.name, rm(b.simpanan), rm(b.diambil), rm(b.simpanan+b.diambil)]),
+    [contentW*0.30, contentW*0.24, contentW*0.22, contentW*0.24],
+    ['left','right','right','right']
+  );
+
+  sectionTitle('C. Status Tabung (Simpanan Fund)');
+  statCards([
+    {label:'Jumlah Terkumpul (Sepanjang Masa)', value:rm(tabungCollectedTotal(targetState))},
+    {label:'Jumlah Dikeluarkan', value:rm(tabungWithdrawnTotal(targetState))},
+    {label:'Baki Tersedia', value:rm(tabungBalance(targetState))}
+  ]);
+  const tYears=tabungYears(targetState);
+  if(tYears.length){
+    drawTable(
+      ['Tahun','Jumlah Terkumpul'],
+      tYears.map(yr=>[String(yr), rm(targetState.months.filter(m=>(m.tahun||new Date().getFullYear())===yr).reduce((s,m)=>s+monthTabung(m),0))]),
+      [contentW*0.5, contentW*0.5],
+      ['left','right']
+    );
+  }
+
+  sectionTitle('D. Butiran Bulanan');
+  if(reportMonths.length===0){
+    paragraph('Tiada rekod bulanan lagi.');
+  } else {
+    [...reportMonths].reverse().forEach(m=>{
+      ensure(34);
+      doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.setTextColor.apply(doc,COL_PALMD);
+      doc.text(m.bulan+' '+(m.tahun||''), marginX, y); y+=15;
+      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor.apply(doc,COL_GREY);
+      const tanLine=(m.tan||m.hargaTan) ? ('Buah Sawit: '+(Number(m.tan)||0).toFixed(2)+' tan   |   Harga: '+rm(m.hargaTan||0)+' / tan   |   ') : '';
+      const infoText=tanLine+'Jumlah FELDA: '+rm(m.jumlah||0)+'   |   Baki Selepas Potongan: '+rm(m.baki)+'   |   Bahagian Setiap Orang: '+rm(m.bahagian);
+      const infoLines=doc.splitTextToSize(infoText, contentW);
+      doc.text(infoLines, marginX, y); y+= infoLines.length*11+8;
+      doc.setTextColor.apply(doc,COL_INK);
+
+      if(m.deducts && m.deducts.length){
+        drawTable(
+          ['Jenis Potongan','Jumlah'],
+          m.deducts.map(d=>[d.label+(isTabungDeduct(d)?'  (Tabung)':''), rm(d.amount)]),
+          [contentW*0.72, contentW*0.28],
+          ['left','right']
+        );
+      } else {
+        paragraph('Tiada potongan direkodkan bulan ini.', 9);
+      }
+    });
+  }
+
+  sectionTitle('E. Sejarah Pengeluaran / Pemindahan (Setiap Bahagian)');
+  if(!targetState.withdrawals || targetState.withdrawals.length===0){
+    paragraph('Tiada rekod pengeluaran atau pemindahan lagi.');
+  } else {
+    drawTable(
+      ['Tarikh','Bahagian','Jumlah','Catatan'],
+      [...targetState.withdrawals].sort((a,c)=>new Date(a.date)-new Date(c.date)).map(w=>{
+        const dt=new Date(w.date); const dateStr=isNaN(dt)?'—':dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+        const name=targetState.names[w.i]||'—';
+        let catatan=w.note||'';
+        if(w.type==='transfer_out') catatan='Pindah ke '+(targetState.names[w.to]||'—')+(w.note?(' — '+w.note):'');
+        else if(w.type==='transfer_in') catatan='Terima dari '+(targetState.names[w.from]||'—')+(w.note?(' — '+w.note):'');
+        return [dateStr, name, rm(w.amount), catatan||'—'];
+      }),
+      [contentW*0.15, contentW*0.22, contentW*0.17, contentW*0.46],
+      ['left','left','right','left']
+    );
+  }
+
+  sectionTitle('F. Sejarah Pengeluaran Tabung');
+  if(!targetState.tabungWithdrawals || targetState.tabungWithdrawals.length===0){
+    paragraph('Tiada rekod pengeluaran Tabung lagi.');
+  } else {
+    drawTable(
+      ['Tarikh','Jumlah','Catatan'],
+      [...targetState.tabungWithdrawals].sort((a,c)=>new Date(a.date)-new Date(c.date)).map(w=>{
+        const dt=new Date(w.date); const dateStr=isNaN(dt)?'—':dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+        return [dateStr, rm(w.amount), w.note||'—'];
+      }),
+      [contentW*0.22, contentW*0.20, contentW*0.58],
+      ['left','right','left']
+    );
+  }
+
+  drawFootersAndPageNumbers();
+  const blob=doc.output('blob');
+  saveFile('FELDA-Money-Report-'+new Date().toISOString().slice(0,10)+'.pdf', blob, false);
+}
+document.getElementById('btnPdf').addEventListener('click', ()=>openPdfScopeModal(state));
+document.getElementById('dvBtnPdf').addEventListener('click', ()=>{
+  if(!dvState){ alert('No data loaded yet — tap "Refresh data" first.'); return; }
+  openPdfScopeModal(dvState);
+});
+
+let pdfScopeTargetState=null;
+function openPdfScopeModal(targetState){
+  pdfScopeTargetState=targetState;
+  const sel=document.getElementById('pdfScopeSelect');
+  sel.innerHTML='<option value="">Semua rekod (All)</option>';
+  const monthsSorted=[...targetState.months].sort((a,b)=>(b.tahun-a.tahun)||(monthNameToNum(b.bulan)-monthNameToNum(a.bulan)));
+  monthsSorted.forEach(m=>{
+    const opt=document.createElement('option'); opt.value=m.id; opt.textContent=m.bulan+' '+m.tahun;
+    sel.appendChild(opt);
+  });
+  document.getElementById('pdfScopeModal').style.display='flex';
+}
+function closePdfScopeModal(){ document.getElementById('pdfScopeModal').style.display='none'; pdfScopeTargetState=null; }
+document.getElementById('pdfScopeCancel').addEventListener('click', closePdfScopeModal);
+document.getElementById('pdfScopeConfirm').addEventListener('click', ()=>{
+  const monthId=document.getElementById('pdfScopeSelect').value || null;
+  const ts=pdfScopeTargetState;
+  closePdfScopeModal();
+  generatePdfReport(ts, monthId);
+});
+document.getElementById('btnSyncNow').addEventListener('click', ()=>{
+  if(!sheetUrl){ alert('Please paste & save the Google Sheet URL first.'); return; }
+  syncToSheet();
+});
+
+/* ============================================================
+   INITIAL LOAD
+   ============================================================ */
+dvState = dvLoadLocal();
+dvRenderAll();
+if(sheetUrl) dvRefreshFromSheet();
+</script>
+</body>
+</html>
